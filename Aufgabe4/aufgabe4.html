@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geocoder</title>
+  <style type="text/css">
+    .hide {
+      display: none;
+    }
+
+    #error {
+      color: red;
+    }
+
+    #noUpdateNeeded,
+    #updateCompleted {
+      color: darkgreen;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div id="loading">
+    Bitte warten...
+  </div>
+
+  <div id="noUpdateNeeded" class="hide">
+    Keine Aktualisierung der Koordinaten erforderlich
+  </div>
+
+  <div id="updateNeeded" class="hide">
+    Sollen die Koordinaten aktualisiert werden?<br>
+    <button type="button" id="btnUpdate">Aktualisieren</button>
+  </div>
+
+  <div id="updateCompleted" class="hide">
+    Die Koordinaten wurden aktualisiert, bitte Adresse ohne zu speichern neu laden.
+  </div>
+
+  <div id="error" class="hide">
+    <div id="errorMsg"></div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkdHIDYcjyIWWetyNLpevJpl573T4s9ys" defer></script>
+  <script>
+    $(document).ready(function () {
+      var coordsFromApi = { lat: null, lng: null };
+
+      // URL Params from Proffix
+      const urlParams = new URLSearchParams(window.location.search);
+      const pxAdressCoords = {
+        lat: parseFloat(urlParams.get("latitude")),
+        lng: parseFloat(urlParams.get("longitude"))
+      };
+      const pxAddressNo = urlParams.get("adressnr");
+      const pxAddressSearchString = urlParams.get("adresssuche");
+      const pxRestApiUrl = urlParams.get("restapiurl");
+      const pxLoginObj = {
+        Benutzer: null, // no user for login with token
+        Passwort: urlParams.get("logintoken"),
+        Datenbank: { Name: urlParams.get("dbname") },
+        Module: ["VOL"]
+      }
+
+      // Events
+      $("#btnUpdate").click(function () {
+        updateCoodinates(pxRestApiUrl, pxLoginObj, pxAddressNo, coordsFromApi);
+      });
+
+      // TODO Check if update needed,
+      // use Google Maps API Geocoder store the result in variable 'coordsFromApi'
+
+      // TODO Set view state 'noUpdateNeeded' or 'updateNeeded'
+
+      // TODO Use view state 'error' for errorhandling
+
+    });
+
+    /**
+     * Set the state of the view
+     * use setErrorViewState() for set errors
+     * 
+     * @param {"loading" | "noUpdateNeeded" | "updateNeeded" | "updateCompleted" | "error"} viewState
+     */
+    function setViewState(viewState) {
+      $("#loading, #noUpdateNeeded, #updateNeeded, #updateCompleted, #error").addClass("hide");
+      $("#" + viewState).removeClass("hide");
+    }
+
+    /**
+     * Set the error state with message
+     * 
+     * @param {string} errorMsg
+     */
+    function setErrorViewState(errorMsg) {
+      setViewState("error");
+      $("#errorMsg").text(errorMsg);
+    }
+
+    /**
+     * Update the coordinates for an address in Proffix
+     * 
+     * @param {string} pxRestApiUrl
+     * @param {{Benutzer: null, Passwort: string, Datenbank: { Name: string }, Module: string[]}} pxLoginObj
+     * @param {string} pxAddressNo
+     * @param {{lat: number, lng: number}} coordsFromApi
+     */
+    function updateCoodinates(pxRestApiUrl, pxLoginObj, pxAddressNo, coordsFromApi) {
+      setViewState("loading");
+
+      // TODO Login on Proffix REST API,
+      // use view state 'error' for errorhandling
+
+      // TODO Patch address with new coordinates,
+      // set view state 'updateCompleted' on success
+      // use view state 'error' for errorhandling
+
+
+    }
+
+  </script>
+</body>
+
+</html>
