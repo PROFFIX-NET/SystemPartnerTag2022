@@ -73,12 +73,28 @@
         updateCoodinates(pxRestApiUrl, pxLoginObj, pxAddressNo, coordsFromApi);
       });
 
-      // TODO Check if update needed,
+      // Check if update needed,
       // use Google Maps API Geocoder store the result in variable 'coordsFromApi'
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ 'address': pxAddressSearchString }, function (results, status) {
+        if (status == 'OK' && results.length && results.length > 0) {
+          coordsFromApi = {
+            lat: results[0].geometry.location.lat().toFixed(6), // limit precision for fixed value
+            lng: results[0].geometry.location.lng().toFixed(6)
+          }
 
-      // TODO Set view state 'noUpdateNeeded' or 'updateNeeded'
+          // Set view state 'noUpdateNeeded' or 'updateNeeded'
+          if (coordsFromApi.lat == pxAdressCoords.lat && coordsFromApi.lng == pxAdressCoords.lng) {
+            setViewState("noUpdateNeeded");
+          } else {
+            setViewState("updateNeeded");
+          }
+        } else {
 
-      // TODO Use view state 'error' for errorhandling
+          // Use view state 'error' for errorhandling
+          setErrorViewState("Beim Abrufen der Koordinaten ist folgender Fehler aufgetreten: " + status);
+        }
+      });
 
     });
 
@@ -114,14 +130,41 @@
     function updateCoodinates(pxRestApiUrl, pxLoginObj, pxAddressNo, coordsFromApi) {
       setViewState("loading");
 
-      // TODO Login on Proffix REST API,
+      // Login on Proffix REST API,
       // use view state 'error' for errorhandling
+      $.ajax({
+        url: pxRestApiUrl + "/pxapi/v4/PRO/Login",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(pxLoginObj),
+        error: function (response) {
+          setErrorViewState("REST API Loginfehler: " + JSON.stringify(response))
+        },
+        success: function (response, status, xhr) {
+          var sessionId = xhr.getResponseHeader("pxsessionid"); // save PxSessionId for next API call
 
-      // TODO Patch address with new coordinates,
-      // set view state 'updateCompleted' on success
-      // use view state 'error' for errorhandling
-
-
+          // Patch address with new coordinates,
+          // set view state 'updateCompleted' on success
+          // use view state 'error' for errorhandling
+          $.ajax({
+            url: pxRestApiUrl + "/pxapi/v4/ADR/Adresse/" + pxAddressNo,
+            type: "PATCH",
+            contentType: "application/json",
+            headers: { PxSessionId: sessionId },
+            data: JSON.stringify({
+              AdressNr: pxAddressNo,
+              Latitude: coordsFromApi.lat,
+              Longitude: coordsFromApi.lng
+            }),
+            error: function (response) {
+              setErrorViewState("REST API Aktualisierungsfehler: " + JSON.stringify(response));
+            },
+            success: function () {
+              setViewState("updateCompleted");
+            }
+          });
+        }
+      })
     }
 
   </script>
