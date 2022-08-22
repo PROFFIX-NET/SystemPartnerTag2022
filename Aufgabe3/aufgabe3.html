@@ -26,22 +26,16 @@
   <script>
     function initMap() {
 
+      // URL Params from Proffix
       const urlParams = new URLSearchParams(window.location.search);
       const point = {
         lat: parseFloat(urlParams.get("latitude")),
         lng: parseFloat(urlParams.get("longitude"))
       };
-      const map = new google.maps.Map(
-        document.getElementById("map"),
-        {
-          zoom: 15,
-          center: point
-        }
-      )
-      const marker = new google.maps.Marker({
-        position: point,
-        map: map
-      });
+
+      // TODO: Show Google Map in div#map
+
+      // TODO: Show marker with position in map
 
     }
   </script>
