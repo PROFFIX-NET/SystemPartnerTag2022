@@ -33,9 +33,20 @@
         lng: parseFloat(urlParams.get("longitude"))
       };
 
-      // TODO: Show Google Map in div#map
+      // Show Google Map in div#map
+      const map = new google.maps.Map(
+        document.getElementById("map"),
+        {
+          zoom: 15,
+          center: point
+        }
+      )
 
-      // TODO: Show marker with position in map
+      // Show marker with position in map
+      const marker = new google.maps.Marker({
+        position: point,
+        map: map
+      });
 
     }
   </script>

@@ -7,3 +7,9 @@ Bei den Stundeneinträgen in der Zeitverwaltung sollen auf einer Karte der Ort a
 - Feldhöhe: 500 Pixel
 - Google Maps Doku: https://developers.google.com/maps/documentation/javascript/adding-a-google-map?hl=de#step_2_add_a_map_with_a_marker
 - HTML-Vorlage: [./aufgabe3.html](https://github.com/PROFFIX-NET/SystemPartnerTag2022/blob/main/Aufgabe3/aufgabe3.html)
+
+## Lösung
+1. Webapplikation schreiben ([Beispiellösung](https://github.com/PROFFIX-NET/SystemPartnerTag2022/blob/Lösung/Aufgabe3/aufgabe3.html))
+2. Auf Stunden neues Zusatzfeld vom Feldtyp _WebView_ in der Gruppe _Hauptfenster_ hinzufügen
+3. Folgende URL eintragen (Beispielpfad): file:///c:/proffix/data/aufgabe3.html?latitude=[latitude]&longitude=[longitude]
+4. Als Feldhöhe 500 Pixel eintragen
