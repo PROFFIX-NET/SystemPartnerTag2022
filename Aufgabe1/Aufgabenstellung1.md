@@ -3,3 +3,8 @@ In der Proffix-Leiste soll eine Verknüpfung auf den SBB Fahrplan erstellt werde
 
 ## Hilfsmittel
 - URL: https://www.sbb.ch/de
+
+## Lösung
+- Neue Verknüpfung in Proffix-Leiste hinzufügen
+- Als Verknüpfung _WebView_ auswählen
+- Bei URL _https://www.sbb.ch/de_ eintragen
